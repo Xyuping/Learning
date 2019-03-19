@@ -14,7 +14,7 @@ typora-root-url: ../../笔记
 
 #### 请求数据解析
 
-![IMG_0955(20190209-133525)](/Servlet/img/IMG_0955(20190209-133525).jpg)
+![IMG_0955(https://ws1.sinaimg.cn/large/006tKfTcly1g1869u4hppj31k60kzwk6.jpg)](/Servlet/img/IMG_0955(20190209-133525).jpg)
 
 1. 请求行
 
@@ -59,7 +59,7 @@ typora-root-url: ../../笔记
 
 #### Http响应数据解析
 
-![C971313C119BEC4B065DEF3BD7568D53](/Servlet/img/C971313C119BEC4B065DEF3BD7568D53.jpeg)
+![C971313C119BEC4B065DEF3BD7568D53](https://ws4.sinaimg.cn/large/006tKfTcly1g1869wc1ymj31gl0jetct.jpg)
 
 1. 响应行
 
@@ -101,7 +101,7 @@ typora-root-url: ../../笔记
 
 #### Get和Post请求区别
 
-![F5E1B2426CF957158C5D22E7287A8AED](/Servlet/img/F5E1B2426CF957158C5D22E7287A8AED.png)
+![F5E1B2426CF957158C5D22E7287A8AED](https://ws4.sinaimg.cn/large/006tKfTcly1g1869v0zowj31js0kg0wz.jpg)
 
 form表单提交方式（<form method='POST/GET'></form>）
 
@@ -165,11 +165,11 @@ servlet是一个接口,在java代码中实现
   		  </servlet-mapping>
   		```
 
-![屏幕快照 2018-10-18 上午11.10.36](/Servlet/img/屏幕快照 2018-10-18 上午11.10.36.png)
+![屏幕快照 2018-10-18 上午11.10.36](https://ws3.sinaimg.cn/large/006tKfTcly1g1869rnxuij31q80skqd6.jpg)
 
 
 
-![屏幕快照 2018-10-18 上午10.58.39](/Servlet/img/屏幕快照 2018-10-18 上午10.58.39.png)
+![屏幕快照 2018-10-18 上午10.58.39](https://ws2.sinaimg.cn/large/006tKfTcly1g1869sqq77j30gj09ignc.jpg)
 
 在地址栏上输入   <u>http://localhost:8080/项目名称/h</u>   即可访问
 
@@ -315,7 +315,7 @@ String address = context.getInitParameter("address");
 
 > String path = context.getRealPath("");得到的是在 tomcat 下的根路径：/Users/xyp/Desktop/JavaWeb/apache-tomcat-7.0.91/wtpwebapps/ServletContextDemo
 
-![屏幕快照 2019-02-11 下午9.50.23](/Servlet/img/屏幕快照 2019-02-11 下午9.50.23.png)
+![屏幕快照 2019-02-11 下午9.50.23](https://ws1.sinaimg.cn/large/006tKfTcly1g1869ulv5tj30p40kwdib.jpg)
 
 ```java
 		ServletContext context = getServletContext();
@@ -364,7 +364,7 @@ ServletContext context = getServletContext();
 
 注意ClassLoader路径跟 ServletContext不同：
 
-![fullsizerender(1)](/Servlet/img/fullsizerender(1).jpg)
+![fullsizerender(https://ws3.sinaimg.cn/large/006tKfTcly1g1869x1zkaj319q0h60ve.jpg)](/Servlet/img/fullsizerender(1).jpg)
 
 #### 3.存取数据（servlet 间共享数据 域对象）
 
