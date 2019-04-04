@@ -83,3 +83,7 @@
 ![屏幕快照 2018-10-11 下午4.01.26](https://ws4.sinaimg.cn/large/006tKfTcly1g186ccrbi8j31pg0nsqcm.jpg)
 
 server里面右键新建一个服务器,选择apache分类,找到对应tomcat版本,一步步配置
+
+### 解析Tomcat内部结构和请求过程
+
+转载：<https://www.cnblogs.com/zhouyuqin/p/5143121.html>

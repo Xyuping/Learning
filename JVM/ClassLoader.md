@@ -1,13 +1,19 @@
-# ClassLoader
+# 类加载机制
 
 ##  java 虚拟机与程序的生命周期
 
-#### java 虚拟机结束生命周期
+### java 虚拟机结束生命周期
 
 - 执行了System.exit(int status)方法 ，当status为0时正常退出，非0时异常退出
 - 程序正常执行结束
 - 程序在执行过程中遇到了异常或错误而异常终止
 - 由于操作系统出现错误而导致 java 虚拟机进程中止
+
+### 程序的生命周期
+
+> 加载、验证、准备、解析、初始化、使用、卸载
+
+其中：验证、准备、解析是连接阶段；并且解析在某些情况下可以在初始化之后开始（这是为了支持 java 语言的运行时绑定，也称为动态绑定或晚期绑定）
 
 ## ClassLoader（类加载器）
 
@@ -38,38 +44,50 @@
 
 为类的静态变量赋予正确的***初始值***
 
-## java程序对类的使用方式（2种）
+## java程序对类的使用方式（主动、被动）
 
-### 主动使用（6种情况）
+### 主动使用（5种情况）
 
-1. 创建类的实例 （new 对象）
-2. 访问某个类或接口的静态变量，或者对该静态变量赋值
-3. 调用类的静态方法
-4. 反射（如 Class.forName("daslkj")）
-5. 初始化一个类的子类
-6. java 虚拟机启动时被标明为启动类的类 （main 方法）
+“初始化”有且只有5种情况：
+
+1. 虚拟机启动时，用户需要制定一个要执行的主类（main 方法的类），虚拟机会先初始化这个类。
+2. 遇到 new、getstatic、putstatic、invokestatic 这四条字节码指令时，如果累没有进行过初始化，则需要先初始化。生成这四条指令最常见的场景是：new 一个对象、读取或设置一个类的静态字段（被 final 修饰、已在编译期把结果放入常量池的静态字段除外）的时候，以及调用一个类的静态方法的时候。
+3. 使用 java.lang包的方法对类进行反射调用的时候，如果累没有经过初始化，则需要先初始化。
+4. 当初始化一个类的时候，如果父类没有进行过初始化，则先对父类初始化。
+5. 当使用 jdk1.7的动态语言支持时，如果一个 java.lang.invoke.MethodHandle实例最后的解析结果REF_getStatic、REF_putStatic、REF_invokeStatic 的方法句柄，并且这个方法句柄所对应的类没有经过初始化，则先触发其初始化。
 
 ```java
 public class Test1 {
 	static {
 		System.out.println("static");
 	}
-
-	public static void main(String[] args) {
-		System.out.println("main");
+public static void main(String[] args) {
+	System.out.println("main");
 	}
 }
-
 =================
     static
     main
 ```
 
 
+以上五中情况称为对一个类进行主动引用。其他情况都称为被动引用。例如：
 
-### 被动使用
+- 通过子类引用父类静态字段不会导致子类初始化但是会让父类初始化；
+- 通过数组定义来引用类不会触发此类的初始化
 
-除了6中主动使用方式外
+```java
+public class Test{
+    public static void main(String[] args){
+        SuperClass[] s = new SuperClass[10];
+    }
+}
+这段代码里面触发了另外一个名为"[Long.fenixsoft.classloading.SuperClass]"的类初始化阶段，它是由虚拟机自动生成的、直接继承于 java.lang.Object子类，创建动作由字节码指令 newarray 触发。
+这个类代表了一个元素类型为org.fenixsoft.classloading.SuperClass 的一维数组，数组中应有的属性和方法(用户可以使用的只有 public 的 length 属性和 clone()方法)都实现在这个类中。
+java 语言比C/C++相对安全是因为这个类封装了数组元素的访问方法，而C/C++直接翻译为对数组指针的移动，在 java 中，当检查到发生数组越界时会抛出java.lang.ArrayIndexOutOfBoundsException异常
+```
+
+- 常量在便一阶段会存入调用类的常量池中，本质上并没有直接引用到定义常量的类，因此不会触发定义常量的类的初始化。
 
 > 所有的 java 虚拟机实现必须在每个类或接口被 java 程序 ***首次主动使用*** 时才初始化他们。
 
