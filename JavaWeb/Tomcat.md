@@ -86,4 +86,58 @@ server里面右键新建一个服务器,选择apache分类,找到对应tomcat版
 
 ### 解析Tomcat内部结构和请求过程
 
-转载：<https://www.cnblogs.com/zhouyuqin/p/5143121.html>
+以下内容摘自<https://www.cnblogs.com/zhouyuqin/p/5143121.html>
+
+> 组件的生命线，Lifecycle接口，组件实现了这个接口就可以被拥有它的组件控制。最高的组件是Servlet，而控制Servlet 的就是Startup，也就是启动和关闭 tomcat。
+
+> Connector：
+>
+> 最重要的功能是接收连接请求然后分配线程让Container来处理请求。多线程的处理是C onnector 设计的核心。
+>
+> 一个 connector 将在某个指定端口上侦听客户请求，创建request 和 response 对象，产生一个线程来处理这个请求并把产生的 request 和 response 对象传给Engine，然后从Engine 中获得响应并返回给客户。
+>
+> tomcat 中两个经典的 connector：
+>
+> 1. Cotote HTTP/1.1 在端口8080侦听来自浏览器的 http 请求
+> 2. Cotote JK2 在端口8009侦听其他Web Server 的Servlet/JSP请求
+
+>Containner
+>
+>Container是容器的父接口，该容器的设计用的是典型的责任链的设计模式，它由四个自容器组件构成，分别是Engine、Host、Context、Wrapper。这四个组件是负责关系，存在包含关系。通常一个Servlet class对应一个Wrapper，如果有多个Servlet定义多个Wrapper，如果有多个Wrapper就要定义一个更高的Container，如Context。 
+>Context 还可以定义在父容器 Host 中，Host 不是必须的，但是要运行 war 程序，就必须要 Host，因为 war 中必有 web.xml 文件，这个文件的解析就需要 Host 了，如果要有多个 Host 就要定义一个 top 容器 Engine 了。而 Engine 没有父容器了，一个 Engine 代表一个完整的 Servlet 引擎。
+>
+>- Engine 容器 
+>	Engine 容器比较简单，它只定义了一些基本的关联关系
+>- Host 容器 
+>	Host 是 Engine 的子容器，一个 Host 在 Engine 中代表一个虚拟主机，这个虚拟主机的作用就是运行多个应用，它负责安装和展开这些应用，并且标识这个应用以便能够区分它们。它的子容器通常是 Context，它除了关联子容器外，还有就是保存一个主机应该有的信息。
+>- Context 容器 
+>	Context 代表 Servlet 的 Context，它具备了 Servlet 运行的基本环境，理论上只要有 Context 就能运行 Servlet 了。简单的 Tomcat 可以没有 Engine 和 Host。Context 最重要的功能就是管理它里面的 Servlet 实例，Servlet 实例在 Context 中是以 Wrapper 出现的，还有一点就是 Context 如何才能找到正确的 Servlet 来执行它呢？ Tomcat5 以前是通过一个 Mapper 类来管理的，Tomcat5 以后这个功能被移到了 request 中，在前面的时序图中就可以发现获取子容器都是通过 request 来分配的。
+>- Wrapper 容器 
+>	Wrapper 代表一个 Servlet，它负责管理一个 Servlet，包括的 Servlet 的装载、初始化、执行以及资源回收。Wrapper 是最底层的容器，它没有子容器了，所以调用它的 addChild 将会报错。 
+>	Wrapper 的实现类是 StandardWrapper，StandardWrapper 还实现了拥有一个 Servlet 初始化信息的 ServletConfig，由此看出 StandardWrapper 将直接和 Servlet 的各种信息打交道。
+
+
+
+Tomcat 的体系结构：
+
+![未命名文件 (https://ws1.sinaimg.cn/large/006tNc79ly1g1rldbzr51j30p10gugm1.jpg)](../../../../Downloads/未命名文件 (3).png)
+
+![未命名文件 (https://ws4.sinaimg.cn/large/006tNc79ly1g1rlhtjrifj30mw0f2glm.jpg)](../../../../Downloads/未命名文件 (2).png)
+
+> Tomcat Server处理一个HTTP请求的过程
+
+![img](https://ws4.sinaimg.cn/large/006tNc79ly1g1rluw2juhj30kv0awgmb.jpg) 
+　　　　　　　　　　　　　　图三：Tomcat Server处理一个HTTP请求的过程
+
+
+
+> 1、用户点击网页内容，请求被发送到本机端口8080，被在那里**监听**的Coyote HTTP/1.1 Connector获得。 
+> 2、Connector把该请求交给它所在的Service的**Engine**来处理，并等待Engine的回应。 
+> 3、Engine获得请求localhost/test/index.jsp，匹配所有的**虚拟主机**Host。 
+> 4、Engine匹配到名为localhost的Host（即使匹配不到也把请求交给该Host处理，因为该Host被定义为该Engine的默认主机），名为localhost的Host获得请求/test/index.jsp，匹配它所拥有的所有的**Contex**t。Host匹配到**路径为/test的Context**（如果匹配不到就把该请求交给路径名为“ ”的Context去处理）。 
+> 5、path=“/test”的Context获得请求/index.jsp，在它的mapping table中**寻找出对应的Servlet**。Context匹配到URL PATTERN为*.jsp的Servlet,对应于JspServlet类。 
+> 6、**构造HttpServletRequest对象和HttpServletResponse对象**，作为参数调用JspServlet的**doGet（）**或**doPost（）**.执行业务逻辑、数据存储等程序。 
+> 7、Context把执行完之后的HttpServletResponse对象返回给Host。 
+> 8、Host把HttpServletResponse对象返回给Engine。 
+> 9、Engine把HttpServletResponse对象返回Connector。 
+> 10、Connector把HttpServletResponse对象返回给客户Browser。
