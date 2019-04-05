@@ -120,9 +120,9 @@ server里面右键新建一个服务器,选择apache分类,找到对应tomcat版
 
 Tomcat 的体系结构：
 
-![未命名文件 (https://ws4.sinaimg.cn/large/006tNc79ly1g1rm3bfaa1j30p10gugm1.jpg)](../../../../Downloads/未命名文件 (3).png)
+![img](https://ws4.sinaimg.cn/large/006tNc79ly1g1rm8u2v9lj30p10gugm1.jpg)
 
-![未命名文件 (https://ws2.sinaimg.cn/large/006tNc79ly1g1rm34whzbj30mw0f2glm.jpg)](../../../../Downloads/未命名文件 (2).png)
+![img](https://ws3.sinaimg.cn/large/006tNc79ly1g1rma1ln9yj30mw0f2t92.jpg)
 
 > Tomcat Server处理一个HTTP请求的过程
 
