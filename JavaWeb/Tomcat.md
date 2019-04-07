@@ -92,7 +92,7 @@ server里面右键新建一个服务器,选择apache分类,找到对应tomcat版
 
 > Connector：
 >
-> 最重要的功能是接收连接请求然后分配线程让Container来处理请求。多线程的处理是C onnector 设计的核心。
+> 最重要的功能是接收连接请求然后分配线程让Container来处理请求。多线程的处理是Connector 设计的核心。
 >
 > 一个 connector 将在某个指定端口上侦听客户请求，创建request 和 response 对象，产生一个线程来处理这个请求并把产生的 request 和 response 对象传给Engine，然后从Engine 中获得响应并返回给客户。
 >
